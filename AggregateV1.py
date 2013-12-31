@@ -10,12 +10,6 @@ class Application(Frame):
         self.myListA = list()
         self.myListB = list()
         self.apihost = apihost
-        #self.username = username
-        #self.password = password
-        #self.key = key
-        #self.secret = secret
-        #self.token = self.getToken("access_token")
-        #self.refreshToken = self.getToken("refresh_token")
         Frame.__init__(self, master)
         self.pack()
         self.createWidgets()
@@ -183,11 +177,11 @@ class Application(Frame):
         self.title = Label(self, image=self.logo)
         self.title.grid(row=0, column=0, columnspan=4, pady=10)
 
-        self.label1 = Label(self, fg='cyan')
+        self.label1 = Label(self, fg='blue')
         self.label1["text"] = "Username:Password"
         self.label1.grid(row=1, column=0, padx=10, pady=10)
 
-        self.label2 = Label(self, fg='cyan')
+        self.label2 = Label(self, fg='blue')
         self.label2["text"] = "Client Key:Client Secret"
         self.label2.grid(row=1, column=1, padx=10, pady=10)
 
@@ -208,7 +202,7 @@ class Application(Frame):
 
         self.passWord = StringVar(self)
         self.passWord.set("Shadow@3876")
-        self.passWordEntry = Entry(self, textvariable=self.passWord)
+        self.passWordEntry = Entry(self, textvariable=self.passWord, show="*")
         self.passWordEntry.grid(row=3, column=0, padx=10, pady=10)
 
         self.userKey = StringVar(self)
