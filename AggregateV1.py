@@ -172,6 +172,28 @@ class Application(Frame):
                 except:
                     pass
 
+    def containA(self):
+        thisStr = self.containStrA.get()
+        namesToKeep = list()
+        for each in self.myListA:
+            if thisStr in each:
+                namesToKeep.append(each)
+        self.myListA = namesToKeep
+        self.listBoxA.delete(0, END)
+        for each in self.myListA:
+            self.listBoxA.insert(END, each)
+
+    def containB(self):
+        thisStr = self.containStrB.get()
+        namesToKeep = list()
+        for each in self.myListB:
+            if thisStr in each:
+                namesToKeep.append(each)
+        self.myListB = namesToKeep
+        self.listBoxB.delete(0, END)
+        for each in self.myListB:
+            self.listBoxB.insert(END, each)
+
     def createWidgets(self):
         self.logo = PhotoImage(file="logo.gif")
         self.title = Label(self, image=self.logo)
@@ -192,6 +214,24 @@ class Application(Frame):
         self.label4 = Label(self, fg="blue")
         self.label4["text"] = "Select Folders and/or Files to Move:"
         self.label4.grid(row=5, column=2, columnspan=2, padx=10, pady=10)
+
+        self.containAButton = Button(self)
+        self.containAButton["text"] = "Select All Containing:"
+        self.containAButton["command"] = self.containA
+        self.containAButton.grid(row=8, column=0, padx=10)
+
+        self.containStrA = StringVar(self)
+        self.containStrAEntry = Entry(self, textvariable=self.containStrA)
+        self.containStrAEntry.grid(row=8, column=1, padx=10)
+
+        self.containBButton = Button(self)
+        self.containBButton["text"] = "Select All Containing:"
+        self.containBButton["command"] = self.containB
+        self.containBButton.grid(row=8, column=2, padx=10)
+
+        self.containStrB = StringVar(self)
+        self.containStrBEntry = Entry(self, textvariable=self.containStrB)
+        self.containStrBEntry.grid(row=8, column=3, padx=10)
 
         self.connectButton = Button(self)
         self.connectButton["text"] = "View Folders in Directory"
@@ -235,12 +275,12 @@ class Application(Frame):
         self.selectAButton = Button(self)
         self.selectAButton["text"] = "Select"
         self.selectAButton["command"] = self.selectA
-        self.selectAButton.grid(row=7, column=0, padx=10, pady=10)
+        self.selectAButton.grid(row=7, column=0, padx=10)
 
         self.deleteAButton = Button(self)
         self.deleteAButton["text"] = "Delete"
         self.deleteAButton["command"] = self.deleteA
-        self.deleteAButton.grid(row=7, column=1, padx=10, pady=10)
+        self.deleteAButton.grid(row=7, column=1, padx=10)
 
         self.selectBButton = Button(self)
         self.selectBButton["text"] = "Select"
