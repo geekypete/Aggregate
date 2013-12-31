@@ -177,13 +177,21 @@ class Application(Frame):
         self.title = Label(self, image=self.logo)
         self.title.grid(row=0, column=0, columnspan=4, pady=10)
 
-        self.label1 = Label(self, fg='blue')
+        self.label1 = Label(self, fg="blue")
         self.label1["text"] = "Username:Password"
         self.label1.grid(row=1, column=0, padx=10, pady=10)
 
-        self.label2 = Label(self, fg='blue')
+        self.label2 = Label(self, fg="blue")
         self.label2["text"] = "Client Key:Client Secret"
         self.label2.grid(row=1, column=1, padx=10, pady=10)
+
+        self.label3 = Label(self, fg="blue")
+        self.label3["text"] = "Select Folders to View:"
+        self.label3.grid(row=5, column=0, columnspan=2, padx=10, pady=10)
+
+        self.label4 = Label(self, fg="blue")
+        self.label4["text"] = "Select Folders and/or Files to Move:"
+        self.label4.grid(row=5, column=2, columnspan=2, padx=10, pady=10)
 
         self.connectButton = Button(self)
         self.connectButton["text"] = "View Folders in Directory"
@@ -222,27 +230,27 @@ class Application(Frame):
 
         self.listBoxA = Listbox(self, selectmode=EXTENDED)
         self.listBoxA.config(height=25, width=50)
-        self.listBoxA.grid(row=5, column=0, columnspan=2)
+        self.listBoxA.grid(row=6, column=0, columnspan=2)
 
         self.selectAButton = Button(self)
         self.selectAButton["text"] = "Select"
         self.selectAButton["command"] = self.selectA
-        self.selectAButton.grid(row=6, column=0, padx=10, pady=10)
+        self.selectAButton.grid(row=7, column=0, padx=10, pady=10)
 
         self.deleteAButton = Button(self)
         self.deleteAButton["text"] = "Delete"
         self.deleteAButton["command"] = self.deleteA
-        self.deleteAButton.grid(row=6, column=1, padx=10, pady=10)
+        self.deleteAButton.grid(row=7, column=1, padx=10, pady=10)
 
         self.selectBButton = Button(self)
         self.selectBButton["text"] = "Select"
         self.selectBButton["command"] = self.selectB
-        self.selectBButton.grid(row=6, column=2, padx=10, pady=10)
+        self.selectBButton.grid(row=7, column=2, padx=10, pady=10)
 
         self.deleteBButton = Button(self)
         self.deleteBButton["text"] = "Delete"
         self.deleteBButton["command"] = self.deleteB
-        self.deleteBButton.grid(row=6, column=3, padx=10, pady=10)
+        self.deleteBButton.grid(row=7, column=3, padx=10, pady=10)
 
         self.getContentsButton = Button(self)
         self.getContentsButton["text"] = "View Contents of Selected Folders"
@@ -271,11 +279,11 @@ class Application(Frame):
 
         self.listBoxB = Listbox(self, selectmode=EXTENDED)
         self.listBoxB.config(height=25, width=50)
-        self.listBoxB.grid(row=5, column=2, columnspan=2)
+        self.listBoxB.grid(row=6, column=2, columnspan=2)
 
         self.log = Listbox(self, selectmode=SINGLE)
         self.log.config(height=25, width=25)
-        self.log.grid(row=5, column=4, columnspan=2)
+        self.log.grid(row=6, column=4, columnspan=2)
 
         self.deleteYesNo = IntVar()
         self.deleteCheck = Checkbutton(self, text="Delete Folders After Moving Files?", var=self.deleteYesNo)
@@ -303,7 +311,7 @@ class Application(Frame):
         self.clearButton = Button(self)
         self.clearButton["text"] = "Clear"
         self.clearButton["command"] = self.clear
-        self.clearButton.grid(row=6, column=4, columnspan=2, padx=10, pady=10)
+        self.clearButton.grid(row=7, column=4, columnspan=2, padx=10, pady=10)
 
 root = Tk()
 root.wm_title('Aggregate')
