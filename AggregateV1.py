@@ -163,7 +163,9 @@ class Application(Frame):
             newFilePath = moveFolder + "/" + fileName
             #print newFilePath
             #print "media/" + each
-            thisRequest = requests.put("https://foundation.iplantcollaborative.org/io-v1/io/" + each, {"action":"move", "newPath":newFilePath})
+            thisRequest = requests.put("https://foundation.iplantcollaborative.org/io-v1/io/" + each, 
+                auth=(self.username, self.password), {"action":"move", "newPath":newFilePath})
+            thisRequest = thisRequest.json()
             print thisRequest
             if thisRequest["status"] == "Success":
                 print "Success"
