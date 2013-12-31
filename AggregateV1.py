@@ -163,14 +163,14 @@ class Application(Frame):
             newFilePath = moveFolder + "/" + fileName
             #print newFilePath
             #print "media/" + each
-            thisRequest = self.put("files", "media/" + each, {"action":"move", "path":newFilePath})
+            thisRequest = requests.put("https://foundation.iplantcollaborative.org/io-v1/io/" + each, {"action":"move", "newPath":newFilePath})
             print thisRequest
-            #if thisRequest["status"] == "Success":
-            #    print "Success"
-            #    self.log.insert(END, "Success")
-            #else:
-            #    print "Failure"
-            #    self.log.insert(END, "Failure")
+            if thisRequest["status"] == "Success":
+                print "Success"
+                self.log.insert(END, "Success")
+            else:
+                print "Failure"
+                self.log.insert(END, "Failure")
 
     def createWidgets(self):
         self.logo = PhotoImage(file="logo.gif")
