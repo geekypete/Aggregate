@@ -30,7 +30,7 @@ class Application(Frame):
         rtype = rtype + "/2.0/"
         headersPayload = {"Authorization":"Bearer " + self.token}
         req = requests.get(apihost + rtype + path, headers = headersPayload)
-        print headersPayload
+        #print headersPayload
         return req.json()
 
     def post(self, rtype, path, data):
@@ -160,15 +160,17 @@ class Application(Frame):
         for each in self.myListB:
             fileName = self.getFileName(each)
             newFilePath = moveFolder + "/" + fileName
-            print newFilePath
-            thisRequest = requests.put(url="https://foundation.iplantcollaborative.org/io-v1/io/" + each, auth=(self.username, self.password), data={"action":"move", "newPath":newFilePath})
+           #print newFilePath
+            thisRequest = requests.put(url="https://foundation.iplantcollaborative.org/io-v1/io/" + each, 
+                auth=(self.username, self.password), data={"action":"move", "newPath":newFilePath})
             thisRequest = thisRequest.json()
             print "Move:" + thisRequest["status"]
             self.log.insert(END, "Move:" + thisRequest['status'])
             #print self.deleteYesNo.get()
         if self.deleteYesNo.get()==1:
             for each in self.myListA:
-                thisRequest = requests.delete(url="https://foundation.iplantcollaborative.org/io-v1/io/" + each, auth=(self.username, self.password))
+                thisRequest = requests.delete(url="https://foundation.iplantcollaborative.org/io-v1/io/" + each, 
+                    auth=(self.username, self.password))
                 thisRequest = thisRequest.json()
                 try:
                     print "Delete:" + thisRequest["status"]
@@ -181,11 +183,11 @@ class Application(Frame):
         self.title = Label(self, image=self.logo)
         self.title.grid(row=0, column=0, columnspan=4, pady=10)
 
-        self.label1 = Label(self)
+        self.label1 = Label(self, fg='cyan')
         self.label1["text"] = "Username:Password"
         self.label1.grid(row=1, column=0, padx=10, pady=10)
 
-        self.label2 = Label(self)
+        self.label2 = Label(self, fg='cyan')
         self.label2["text"] = "Client Key:Client Secret"
         self.label2.grid(row=1, column=1, padx=10, pady=10)
 
