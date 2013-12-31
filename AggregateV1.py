@@ -121,15 +121,15 @@ class Application(Frame):
         for item in self.myListA:
             thisRequest = self.get("files", "listings/" + item)
             if thisRequest["status"]=="success":
-                print "Success"
-                self.log.insert(END, "Success")
+                print "View:" + thisRequest["status"]
+                self.log.insert(END, "View:" + thisRequest["status"])
                 thisRequestList = self.makeListFromResult(thisRequest, "path")
                 for thing in thisRequestList:
                     self.listBoxB.insert(END, thing)
                     self.myListB.append(thing)
             else:
-                self.log.insert(END, "Failure")
-                print "Failure"
+                self.log.insert(END, "View:" + thisRequest["status"])
+                print "View:" + thisRequest["status"]
 
     def breakFileName(self, fileName):
         fileName = fileName.split(".")
@@ -159,25 +159,35 @@ class Application(Frame):
         moveFolder = self.enterMoveFolder.get()
         for each in self.myListB:
             fileName = self.getFileName(each)
-            #print fileName
             newFilePath = moveFolder + "/" + fileName
-            #print newFilePath
-            #print "media/" + each
-            thisRequest = requests.put("https://foundation.iplantcollaborative.org/io-v1/io/" + each, 
-                auth=(self.username, self.password), {"action":"move", "newPath":newFilePath})
+            print newFilePath
+            thisRequest = requests.put(url="https://foundation.iplantcollaborative.org/io-v1/io/" + each, auth=(self.username, self.password), data={"action":"move", "newPath":newFilePath})
             thisRequest = thisRequest.json()
-            print thisRequest
-            if thisRequest["status"] == "Success":
-                print "Success"
-                self.log.insert(END, "Success")
-            else:
-                print "Failure"
-                self.log.insert(END, "Failure")
+            print "Move:" + thisRequest["status"]
+            self.log.insert(END, "Move:" + thisRequest['status'])
+            #print self.deleteYesNo.get()
+        if self.deleteYesNo.get()==1:
+            for each in self.myListA:
+                thisRequest = requests.delete(url="https://foundation.iplantcollaborative.org/io-v1/io/" + each, auth=(self.username, self.password))
+                thisRequest = thisRequest.json()
+                try:
+                    print "Delete:" + thisRequest["status"]
+                    self.log.insert(END, "Delete:" + thisRequest["status"])
+                except:
+                    pass
 
     def createWidgets(self):
         self.logo = PhotoImage(file="logo.gif")
         self.title = Label(self, image=self.logo)
         self.title.grid(row=0, column=0, columnspan=4, pady=10)
+
+        self.label1 = Label(self)
+        self.label1["text"] = "Username:Password"
+        self.label1.grid(row=1, column=0, padx=10, pady=10)
+
+        self.label2 = Label(self)
+        self.label2["text"] = "Client Key:Client Secret"
+        self.label2.grid(row=1, column=1, padx=10, pady=10)
 
         self.connectButton = Button(self)
         self.connectButton["text"] = "View Folders in Directory"
@@ -259,7 +269,7 @@ class Application(Frame):
         self.enterFileTypeEntry.grid(row=3, column=3, padx=10, pady=10)
 
         self.enterMoveFolder = StringVar(self)
-        self.enterMoveFolder.set("dalanders/aggTest")
+        self.enterMoveFolder.set("dalanders/")
         self.enterMoveFolderEntry = Entry(self, textvariable=self.enterMoveFolder)
         self.enterMoveFolderEntry.grid(row=4, column=3, padx=10, pady=10)
 
@@ -271,15 +281,19 @@ class Application(Frame):
         self.log.config(height=25, width=25)
         self.log.grid(row=5, column=4, columnspan=2)
 
-        self.printAButton = Button(self)
-        self.printAButton["text"] = "Print A"
-        self.printAButton["command"] = self.printA
-        self.printAButton.grid(row=1, column=2, padx=10, pady=10)
+        self.deleteYesNo = IntVar()
+        self.deleteCheck = Checkbutton(self, text="Delete Folders After Moving Files?", var=self.deleteYesNo)
+        self.deleteCheck.grid(row=1, column=2, columnspan=2, padx=10, pady=10)
 
-        self.printBButton = Button(self)
-        self.printBButton["text"] = "Print B"
-        self.printBButton["command"] = self.printB
-        self.printBButton.grid(row=1, column=3, padx=10, pady=10)
+        #self.printAButton = Button(self)
+        #self.printAButton["text"] = "Print A"
+        #self.printAButton["command"] = self.printA
+        #self.printAButton.grid(row=1, column=2, padx=10, pady=10)
+
+        #self.printBButton = Button(self)
+        #self.printBButton["text"] = "Print B"
+        #self.printBButton["command"] = self.printB
+        #self.printBButton.grid(row=1, column=3, padx=10, pady=10)
 
         #self.mkDirButton = Button(self)
         #self.mkDirButton["text"] = "Make Directory"
