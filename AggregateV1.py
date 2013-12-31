@@ -112,6 +112,8 @@ class Application(Frame):
         print self.myListB
 
     def getContents(self):
+        self.myListB = list()
+        self.listBoxB.delete(0, END)
         for item in self.myListA:
             thisRequest = self.get("files", "listings/" + item)
             if thisRequest["status"]=="success":
@@ -346,7 +348,7 @@ class Application(Frame):
 
         self.logLabel = Label(self)
         self.logLabel["text"] = "Log"
-        self.logLabel.grid(row=4, column=4, columnspan=2, padx=10, pady=10)
+        self.logLabel.grid(row=5, column=4, columnspan=2, padx=10, pady=10)
 
         self.clearButton = Button(self)
         self.clearButton["text"] = "Clear"
