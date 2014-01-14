@@ -80,12 +80,7 @@ class Application(Frame):
     def getContents(self):
         self.myListB = list()
         self.listBoxB.delete(0, END)
-        myListAlen = float(len(self.myListA))
-        count = 0.0
         for item in self.myListA:
-            count += 1.0
-            print str((count/myListAlen)*100) + " Percent Complete"
-            #self.percent["text"] = str((count/myListAlen)*100) + "%"
             thisRequest = requests.get("https://foundation.iplantcollaborative.org/io-v1/io/list/" + item, 
                 auth=(self.username, self.password)).json()
             if thisRequest["status"]=="success":
@@ -125,12 +120,7 @@ class Application(Frame):
 
     def moveFiles(self):
         moveFolder = self.enterMoveFolder.get()
-        count = 0.0
-        myListBlen = float(len(self.myListB))
         for each in self.myListB:
-            count += 1.0
-            print str((count/myListBlen)*100) + " Percent Complete"
-            #self.percent["text"] = str((count/myListBlen)*100) + "%"
             fileName = self.getFileName(each)
             newFilePath = moveFolder + "/" + fileName
            #print newFilePath
@@ -174,10 +164,6 @@ class Application(Frame):
             self.listBoxB.insert(END, each)
 
     def createWidgets(self):
-
-        #self.percent = Label(self)
-        #self.percent["text"] = str(0) + "%"
-        #self.percent.grid(row=1, column=4, columnspan=2, padx=5, pady=10)
 
         self.logo = Label(self, fg="black", font=100)
         self.logo["text"] = "Aggregate: An Application for iPlant Collaborative"
