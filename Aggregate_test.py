@@ -173,168 +173,19 @@ class Application(Frame):
         for each in self.myListB:
             self.listBoxB.insert(END, each)
 
-    def test(self):
-        for i in range(100):
-            self.listBoxA.insert(END, i)
-
     def createWidgets(self):
 
-        self.logo = Label(self, fg="black", font=100)
-        self.logo["text"] = "Aggregate: An Application for iPlant Collaborative"
-        self.logo.grid(row=0, column=0)
-
-        self.label1 = Label(self, fg="blue")
-        self.label1["text"] = "Username:"
-        self.label1.grid(row=1, column=0)
-
-        self.label5 = Label(self, fg="blue")
-        self.label5["text"] = "Password:"
-        self.label5.grid(row=2, column=0)
-
-        self.label3 = Label(self, fg="blue")
-        self.label3["text"] = "Select Folders to View:"
-        self.label3.grid(row=4, column=0, columnspan=2)
-
-        self.label4 = Label(self, fg="blue")
-        self.label4["text"] = "Select Folders and/or Files to Move:"
-        self.label4.grid(row=4, column=3, columnspan=2)
-
-        self.containAButton = Button(self)
-        self.containAButton["text"] = "Select All Containing:"
-        self.containAButton["command"] = self.containA
-        self.containAButton.grid(row=9, column=0)
-
-        self.containStrA = StringVar(self)
-        self.containStrAEntry = Entry(self, textvariable=self.containStrA)
-        self.containStrAEntry.grid(row=9, column=1)
-
-        self.containBButton = Button(self)
-        self.containBButton["text"] = "Select All Containing:"
-        self.containBButton["command"] = self.containB
-        self.containBButton.grid(row=9, column=3)
-
-        self.containStrB = StringVar(self)
-        self.containStrBEntry = Entry(self, textvariable=self.containStrB)
-        self.containStrBEntry.grid(row=9, column=4)
-
-        self.connectButton = Button(self)
-        self.connectButton["text"] = "View Folders in Directory"
-        self.connectButton["command"] = self.connect
-        self.connectButton.grid(row=3, column=0)
-
-        self.quitButton = Button(self)
-        self.quitButton["text"] = "Quit"
-        self.quitButton["command"] = self.quit
-        self.quitButton.grid(row=0, column=4)
-
-        self.userName = StringVar(self)
-        self.userName.set("")
-        self.userNameEntry = Entry(self, textvariable=self.userName)
-        self.userNameEntry.grid(row=1, column=1)
-
-        self.passWord = StringVar(self)
-        self.passWord.set("")
-        self.passWordEntry = Entry(self, textvariable=self.passWord, show="*")
-        self.passWordEntry.grid(row=2, column=1)
-
-        self.enterFolder = StringVar(self)
-        self.enterFolder.set("")
-        self.enterFolderEntry = Entry(self, textvariable=self.enterFolder)
-        self.enterFolderEntry.grid(row=3, column=1)
-
-        self.yScrollBarA = Scrollbar(self, orient=VERTICAL)
-        self.yScrollBarA.grid(row=5, column=2, sticky=N+S+W)
-
-        self.xScrollBarA = Scrollbar(self, orient=HORIZONTAL)
-        self.xScrollBarA.grid(row=6, column=0, sticky=W+E+N)
+        self.scrollbarA = Scrollbar(self, orient=VERTICAL)
+        self.scrollbarA.grid(row=0, column=2)
 
         self.listBoxA = Listbox(self, selectmode=EXTENDED)
-        self.listBoxA.config(height=25, width=62)
-        self.listBoxA.grid(row=5, column=0, columnspan=2, sticky=N+S+E+W)
+        self.listBoxA.config(height=25, width=50)
+        self.listBoxA.grid(row=0, column=0, columnspan=2)
 
         ## Attach scrollbars
-        self.listBoxA.config(yscrollcommand=self.yScrollBarA.set, xscrollcommand=self.xScrollBarA.set)
-        self.yScrollBarA.config(command=self.listBoxA.yview)
-        self.xScrollBarA.config(command=self.listBoxA.xview)
+        self.listBoxA.config(yscrollcommand=self.scrollbarA.set)
+        self.scrollbarA.config(command=self.listBoxA.yview)
 
-        self.test()
-
-        self.selectAButton = Button(self)
-        self.selectAButton["text"] = "Select"
-        self.selectAButton["command"] = self.selectA
-        self.selectAButton.grid(row=10, column=0)
-
-        self.deleteAButton = Button(self)
-        self.deleteAButton["text"] = "Delete"
-        self.deleteAButton["command"] = self.deleteA
-        self.deleteAButton.grid(row=10, column=1)
-
-        self.selectBButton = Button(self)
-        self.selectBButton["text"] = "Select"
-        self.selectBButton["command"] = self.selectB
-        self.selectBButton.grid(row=10, column=3)
-
-        self.deleteBButton = Button(self)
-        self.deleteBButton["text"] = "Delete"
-        self.deleteBButton["command"] = self.deleteB
-        self.deleteBButton.grid(row=10, column=4)
-
-        self.getContentsButton = Button(self)
-        self.getContentsButton["text"] = "View Contents of Selected Folders"
-        self.getContentsButton["command"] = self.getContents
-        self.getContentsButton.grid(row=1, column=3, columnspan=2)
-
-        self.selectFileTypeButton = Button(self)
-        self.selectFileTypeButton["text"] = "Select File Type"
-        self.selectFileTypeButton["command"] = self.selectFileType
-        self.selectFileTypeButton.grid(row=2, column=3)
-
-        self.moveFilesButton = Button(self)
-        self.moveFilesButton["text"] = "Move Files"
-        self.moveFilesButton["command"] = self.moveFiles
-        self.moveFilesButton.grid(row=3, column=3)
-
-        self.enterFileType = StringVar(self)
-        self.enterFileType.set("")
-        self.enterFileTypeEntry = Entry(self, textvariable=self.enterFileType)
-        self.enterFileTypeEntry.grid(row=2, column=4)
-
-        self.enterMoveFolder = StringVar(self)
-        self.enterMoveFolder.set("")
-        self.enterMoveFolderEntry = Entry(self, textvariable=self.enterMoveFolder)
-        self.enterMoveFolderEntry.grid(row=3, column=4)
-
-        self.yScrollBarB = Scrollbar(self, orient=VERTICAL)
-        self.yScrollBarB.grid(row=5, column=5, sticky=N+S+W)
-
-        self.xScrollBarB = Scrollbar(self, orient=HORIZONTAL)
-        self.xScrollBarB.grid(row=6, column=3, sticky=W+E+N)
-
-        self.listBoxB = Listbox(self, selectmode=EXTENDED)
-        self.listBoxB.config(height=25, width=62)
-        self.listBoxB.grid(row=5, column=3, columnspan=2)
-
-        ## Attach scrollbars
-        self.listBoxB.config(yscrollcommand=self.yScrollBarB.set, xscrollcommand=self.xScrollBarB.set)
-        self.yScrollBarB.config(command=self.listBoxB.yview)
-        self.xScrollBarB.config(command=self.listBoxB.xview)
-
-        self.log = Listbox(self, selectmode=SINGLE)
-        self.log.config(height=25, width=25)
-        #self.log.grid(row=6, column=4, columnspan=2)
-
-        self.deleteYesNo = IntVar()
-        self.deleteCheck = Checkbutton(self, text="Delete Folders After Moving Files?", var=self.deleteYesNo)
-        #self.deleteCheck.grid(row=1, column=2, columnspan=2, padx=5, pady=10)
-
-        self.logLabel = Label(self)
-        self.logLabel["text"] = "Log"
-        #self.logLabel.grid(row=5, column=4, columnspan=2, padx=5, pady=10)
-
-        self.clearButton = Button(self)
-        self.clearButton["text"] = "Clear"
-        self.clearButton["command"] = self.clear
-        #self.clearButton.grid(row=7, column=4, columnspan=2, padx=5, pady=10)
 
 root = Tk()
 root.wm_title('Aggregate')
