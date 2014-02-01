@@ -86,10 +86,10 @@ class Application(Frame):
         count = 0.0
         for item in self.myListA:
             count += 1.0
-            self.printP(count, myListAlen)
             print str((count/myListAlen)*100) + " Percent Complete"
             thisRequest = requests.get("https://foundation.iplantcollaborative.org/io-v1/io/list/" + item, 
                 auth=(self.username, self.password)).json()
+            self.printP(count, myListAlen)
             if thisRequest["status"]=="success":
                 print "View:" + thisRequest["status"]
                 self.log.insert(END, "View:" + thisRequest["status"])
@@ -125,14 +125,32 @@ class Application(Frame):
         for each in self.myListB:
             self.listBoxB.insert(END, each)
 
+    def getFilePath(self, moveFolder):
+        numList = list()
+        for i in range(len(moveFolder)):
+            if moveFolder[i] == "/":
+                numList.append(i)
+        return moveFolder[0:numList[len(numList)-1]]
+
     def moveFiles(self):
         moveFolder = self.enterMoveFolder.get()
+        req = requests.get("https://foundation.iplantcollaborative.org/io-v1/io/list/" + moveFolder, 
+            auth=(self.username, self.password))
+        if req.json()["status"] == "error":
+            fileName = self.getFileName(moveFolder)
+            filePath = self.getFilePath(moveFolder)
+            payload = {'action' : 'mkdir', 'dirName' : fileName}
+            req = requests.put('https://foundation.iplantcollaborative.org/io-v1/io/' + filePath, 
+                auth=(self.username, self.password), data=payload)
+            #if req.json()["status"] == "success":
+                #self.percent = Label(self, text="Folder Created")
+                #self.percent.grid(row=0, column=4)
+                #self.update_idletasks()
         count = 0.0
         myListBlen = float(len(self.myListB))
         for each in self.myListB:
             count += 1.0
             print str((count/myListBlen)*100) + " Percent Complete"
-            self.printP(count, myListBlen)
             #self.percent["text"] = str((count/myListBlen)*100) + "%"
             fileName = self.getFileName(each)
             newFilePath = moveFolder + "/" + fileName
@@ -143,6 +161,7 @@ class Application(Frame):
             print "Move:" + thisRequest["status"]
             self.log.insert(END, "Move:" + thisRequest['status'])
             #print self.deleteYesNo.get()
+            self.printP(count, myListBlen)
         if self.deleteYesNo.get()==1:
             for each in self.myListA:
                 thisRequest = requests.delete(url="https://foundation.iplantcollaborative.org/io-v1/io/" + each, 
