@@ -71,24 +71,23 @@ class Application(Frame):
         for item in self.myListB:
             self.listBoxB.insert(END, item)  
 
-    def printA(self):
-        print self.myListA
-
-    def printP(self):
-            self.percent = Label(self, text=str((self.count/self.myListAlen)*100))
-            self.percent.grid(row=0, column=4)
-            self.pack()
+    def printP(self, a, b):
+        self.percent = Label(self, text="")
+        self.percent.grid(row=0, column=4)
+        self.update_idletasks()
+        self.percent = Label(self, text=str((a/b)*100)[0:5] + "%")
+        self.percent.grid(row=0, column=4)
+        self.update_idletasks()
 
     def getContents(self):
         self.myListB = list()
         self.listBoxB.delete(0, END)
-        self.myListAlen = float(len(self.myListA))
-        self.count = 0.0
+        myListAlen = float(len(self.myListA))
+        count = 0.0
         for item in self.myListA:
-            self.count += 1.0
-            print str((self.count/self.myListAlen)*100) + " Percent Complete"
-            self.printP()
-            #self.percent["text"] = str((count/myListAlen)*100) + "%"
+            count += 1.0
+            self.printP(count, myListAlen)
+            print str((count/myListAlen)*100) + " Percent Complete"
             thisRequest = requests.get("https://foundation.iplantcollaborative.org/io-v1/io/list/" + item, 
                 auth=(self.username, self.password)).json()
             if thisRequest["status"]=="success":
@@ -133,6 +132,7 @@ class Application(Frame):
         for each in self.myListB:
             count += 1.0
             print str((count/myListBlen)*100) + " Percent Complete"
+            self.printP(count, myListBlen)
             #self.percent["text"] = str((count/myListBlen)*100) + "%"
             fileName = self.getFileName(each)
             newFilePath = moveFolder + "/" + fileName
@@ -176,23 +176,19 @@ class Application(Frame):
         for each in self.myListB:
             self.listBoxB.insert(END, each)
 
-    def test(self):
-        for i in range(100):
-            self.listBoxA.insert(END, i)
-
     def createWidgets(self):
 
         self.logo = Label(self, fg="black", font=100)
         self.logo["text"] = "Aggregate: An Application for iPlant Collaborative"
-        self.logo.grid(row=0, column=0)
+        self.logo.grid(row=0, column=0, pady=20)
 
         self.label1 = Label(self, fg="blue")
         self.label1["text"] = "Username:"
-        self.label1.grid(row=1, column=0)
+        self.label1.grid(row=1, column=0, sticky=E)
 
         self.label5 = Label(self, fg="blue")
         self.label5["text"] = "Password:"
-        self.label5.grid(row=2, column=0)
+        self.label5.grid(row=2, column=0, sticky=E)
 
         self.label3 = Label(self, fg="blue")
         self.label3["text"] = "Select Folders to View:"
@@ -205,45 +201,45 @@ class Application(Frame):
         self.containAButton = Button(self)
         self.containAButton["text"] = "Select All Containing:"
         self.containAButton["command"] = self.containA
-        self.containAButton.grid(row=9, column=0)
+        self.containAButton.grid(row=9, column=0, sticky=E)
 
         self.containStrA = StringVar(self)
         self.containStrAEntry = Entry(self, textvariable=self.containStrA)
-        self.containStrAEntry.grid(row=9, column=1)
+        self.containStrAEntry.grid(row=9, column=1, sticky=W)
 
         self.containBButton = Button(self)
         self.containBButton["text"] = "Select All Containing:"
         self.containBButton["command"] = self.containB
-        self.containBButton.grid(row=9, column=3)
+        self.containBButton.grid(row=9, column=3, sticky=E)
 
         self.containStrB = StringVar(self)
         self.containStrBEntry = Entry(self, textvariable=self.containStrB)
-        self.containStrBEntry.grid(row=9, column=4)
+        self.containStrBEntry.grid(row=9, column=4, sticky=W)
 
         self.connectButton = Button(self)
         self.connectButton["text"] = "View Folders in Directory"
         self.connectButton["command"] = self.connect
-        self.connectButton.grid(row=3, column=0)
+        self.connectButton.grid(row=3, column=0, sticky=E)
 
         self.quitButton = Button(self)
         self.quitButton["text"] = "Quit"
         self.quitButton["command"] = self.quit
-        #self.quitButton.grid(row=0, column=4)
+        self.quitButton.grid(row=0, column=5)
 
         self.userName = StringVar(self)
         self.userName.set("")
         self.userNameEntry = Entry(self, textvariable=self.userName)
-        self.userNameEntry.grid(row=1, column=1)
+        self.userNameEntry.grid(row=1, column=1, sticky=W)
 
         self.passWord = StringVar(self)
         self.passWord.set("")
         self.passWordEntry = Entry(self, textvariable=self.passWord, show="*")
-        self.passWordEntry.grid(row=2, column=1)
+        self.passWordEntry.grid(row=2, column=1, sticky=W)
 
         self.enterFolder = StringVar(self)
         self.enterFolder.set("")
         self.enterFolderEntry = Entry(self, textvariable=self.enterFolder)
-        self.enterFolderEntry.grid(row=3, column=1)
+        self.enterFolderEntry.grid(row=3, column=1, sticky=W)
 
         self.yScrollBarA = Scrollbar(self, orient=VERTICAL)
         self.yScrollBarA.grid(row=5, column=2, sticky=N+S+W)
@@ -259,8 +255,6 @@ class Application(Frame):
         self.listBoxA.config(yscrollcommand=self.yScrollBarA.set, xscrollcommand=self.xScrollBarA.set)
         self.yScrollBarA.config(command=self.listBoxA.yview)
         self.xScrollBarA.config(command=self.listBoxA.xview)
-
-        self.test()
 
         self.selectAButton = Button(self)
         self.selectAButton["text"] = "Select"
@@ -290,22 +284,22 @@ class Application(Frame):
         self.selectFileTypeButton = Button(self)
         self.selectFileTypeButton["text"] = "Select File Type"
         self.selectFileTypeButton["command"] = self.selectFileType
-        self.selectFileTypeButton.grid(row=2, column=3)
+        self.selectFileTypeButton.grid(row=2, column=3, sticky=E)
 
         self.moveFilesButton = Button(self)
         self.moveFilesButton["text"] = "Move Files"
         self.moveFilesButton["command"] = self.moveFiles
-        self.moveFilesButton.grid(row=3, column=3)
+        self.moveFilesButton.grid(row=3, column=3, sticky=E)
 
         self.enterFileType = StringVar(self)
         self.enterFileType.set("")
         self.enterFileTypeEntry = Entry(self, textvariable=self.enterFileType)
-        self.enterFileTypeEntry.grid(row=2, column=4)
+        self.enterFileTypeEntry.grid(row=2, column=4, sticky=W)
 
         self.enterMoveFolder = StringVar(self)
         self.enterMoveFolder.set("")
         self.enterMoveFolderEntry = Entry(self, textvariable=self.enterMoveFolder)
-        self.enterMoveFolderEntry.grid(row=3, column=4)
+        self.enterMoveFolderEntry.grid(row=3, column=4, sticky=W)
 
         self.yScrollBarB = Scrollbar(self, orient=VERTICAL)
         self.yScrollBarB.grid(row=5, column=5, sticky=N+S+W)
