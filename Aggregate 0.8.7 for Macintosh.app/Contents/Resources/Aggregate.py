@@ -75,7 +75,7 @@ class Application(Frame):
         self.percent = Label(self, text="")
         self.percent.grid(row=0, column=4)
         self.update_idletasks()
-        self.percent = Label(self, text=str((a/b)*100)[0:5] + "% \n" + str(int(a)) + "/" + str(int(b)))
+        self.percent = Label(self, text=str((a/b)*100)[0:5] + "%")
         self.percent.grid(row=0, column=4)
         self.update_idletasks()
 
