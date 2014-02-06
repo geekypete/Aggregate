@@ -1,6 +1,5 @@
 import requests
 from Tkinter import *
-import tkMessageBox
 
 class Application(Frame):
     def __init__(self, master=None):
@@ -241,10 +240,10 @@ class Application(Frame):
         self.connectButton["command"] = self.connect
         self.connectButton.grid(row=3, column=0, sticky=E)
 
-        #self.quitButton = Button(self)
-        #self.quitButton["text"] = "Quit"
-        #self.quitButton["command"] = self.quit
-        #self.quitButton.grid(row=0, column=5)
+        self.quitButton = Button(self)
+        self.quitButton["text"] = "Quit"
+        self.quitButton["command"] = self.quit
+        self.quitButton.grid(row=0, column=5)
 
         self.userName = StringVar(self)
         self.userName.set("")
@@ -353,13 +352,8 @@ class Application(Frame):
         self.clearButton["command"] = self.clear
         #self.clearButton.grid(row=7, column=4, columnspan=2, padx=5, pady=10)
 
-def ask_quit():
-    if tkMessageBox.askokcancel("Quit", "You want to quit now?"):
-        root.quit()
-
 root = Tk()
 root.wm_title('Aggregate')
 app = Application(master=root)
-root.protocol("WM_DELETE_WINDOW", ask_quit)
 app.mainloop()
 root.destroy()
